@@ -14,6 +14,7 @@ public:
         int size = -1 * num_objects * std::log(false_positive_rate) / std::pow(std::log(2), 2); //size in bits
         //Determine number of hash functions to use
         num_hashes = size / num_objects * std::log(2); 
+        container.resize(size);
     }
 
     void insert(const std::string& s) {
@@ -38,12 +39,15 @@ public:
 private:
     //Add any private member variables that may be neccessary
     int num_hashes;
-    std::bitset container;
+    std::vector<bool> container;
     std::pair<uint64_t, uint64_t> hash(const std::string& datum) {
         //Use MD5 to hash the string into one 128 bit hash, and split into 2 hashes
-        
-        //This line is for compiling, replace this with own code
-        return {0,0};
+        unsigned char val[16];
+        MD5(datum.c_str(), datum.length(), val);
+        uint64_t first, second;
+        memcpy(&first, val, 8);
+        memcpy(&second, val + 8, 8);
+        return {first, second};
     }
 };
 
