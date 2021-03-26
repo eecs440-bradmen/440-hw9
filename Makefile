@@ -4,7 +4,7 @@ LDFLAGS = -L/opt/homebrew/opt/openssl/lib
 LIBS = -ldl -lssl -lcrypto
 
 bf: main.cpp
-	g++ $(CXXFLAGS) $(CFLAGS)  $^ $(LDFLAGS) $(LIBS) -o $@ 
+	g++ $(CXXFLAGS)  $^  $(LIBS) -o $@ 
 
 clean:
 	rm -rf bf
