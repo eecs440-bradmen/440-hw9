@@ -6,7 +6,7 @@
 #include <string>
 #include <string.h>
 // #include "/opt/homebrew/opt/openssl@1.1"
-#include <openssl>
+#include <openssl/md5.h>
 
 class Bloomfilter {
 public:
@@ -32,11 +32,11 @@ public:
         //Use double hashing to get unique bit, and repeat for each hash function
         for (int i = 0; i < num_hashes; i++) {
             // get lowest (hashSize) bits from both parts of hash
-            int first = (hashes->first) & mask; 
-            int second = (hashes->second) & mask; 
+            int first = (hashes.first) & mask; 
+            int second = (hashes.second) & mask; 
             // shift hashes 
-            hashes->first = hashes->first >> (i * hashSize);
-            hashes->second = hashes->second >> (i * hashSize);
+            hashes.first = hashes.first >> (i * hashSize);
+            hashes.second = hashes.second >> (i * hashSize);
             //compute index to set
             int to_set = (first + (i * second)) % container.size();
             container[to_set] = true;
@@ -57,11 +57,11 @@ public:
         //Use double hashing to get unique bit, and repeat for each hash function
         for (int i = 0; i < num_hashes; i++) {
             // get lowest (hashSize) bits from both parts of hash
-            int first = (hashes->first) & mask; 
-            int second = (hashes->second) & mask; 
+            int first = (hashes.first) & mask; 
+            int second = (hashes.second) & mask; 
             // shift hashes 
-            hashes->first = hashes->first >> (i * hashSize);
-            hashes->second = hashes->second >> (i * hashSize);
+            hashes.first = hashes.first >> (i * hashSize);
+            hashes.second = hashes.second >> (i * hashSize);
             //compute index to set
             int to_check = (first + (i * second)) % container.size();
             if (!container[to_check])
