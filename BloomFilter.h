@@ -21,24 +21,9 @@ public:
     void insert(const std::string& s) {
         //Hash the string into two unique hashes
         std::pair<uint64_t, uint64_t> hashes = hash(s);
-        int hashSize = 64 / num_hashes; // split into num_hashes sets of bits for each "hash function"
-        // setup mask for getting each set of bits
-        int mask = 0;
-        int to_add = 1;
-        for (int i = 0; i < hashSize; i++) {
-            mask += to_add;
-            to_add *= 2;
-        }
-        //Use double hashing to get unique bit, and repeat for each hash function
         for (int i = 0; i < num_hashes; i++) {
-            // get lowest (hashSize) bits from both parts of hash
-            int first = (hashes.first) & mask; 
-            int second = (hashes.second) & mask; 
-            // shift hashes 
-            hashes.first = hashes.first >> (i * hashSize);
-            hashes.second = hashes.second >> (i * hashSize);
             //compute index to set
-            int to_set = (first + (i * second)) % container.size();
+            int to_set = (hashes.first + (i * hashes.second)) % container.size();
             container[to_set] = true;
         }
     }
@@ -46,24 +31,9 @@ public:
     bool contains(const std::string& s) {
         //Hash the string into two unique hashes
         std::pair<uint64_t, uint64_t> hashes = hash(s);
-        int hashSize = 64 / num_hashes; // split into num_hashes sets of bits for each "hash function"
-        // setup mask for getting each set of bits
-        int mask = 0;
-        int to_add = 1;
-        for (int i = 0; i < hashSize; i++) {
-            mask += to_add;
-            to_add *= 2;
-        }
-        //Use double hashing to get unique bit, and repeat for each hash function
         for (int i = 0; i < num_hashes; i++) {
-            // get lowest (hashSize) bits from both parts of hash
-            int first = (hashes.first) & mask; 
-            int second = (hashes.second) & mask; 
-            // shift hashes 
-            hashes.first = hashes.first >> (i * hashSize);
-            hashes.second = hashes.second >> (i * hashSize);
             //compute index to set
-            int to_check = (first + (i * second)) % container.size();
+            int to_check = (hashes.first + (i * hashes.second)) % container.size();
             if (!container[to_check])
                 return false;
         }
